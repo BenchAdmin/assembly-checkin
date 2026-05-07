@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assembly — Quarterly Check-In</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Libre+Franklin:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:       #132030;
+  --navy-deep:  #0D1620;
+  --cream:      #F4ECE4;
+  --off-white:  #F8F8F8;
+  --red:        #B91207;
+  --gold:       #C78B4F;
+  --gold-light: #D9A96C;
+  --olive:      #A2A45D;
+  --terra:      #B3563A;
+  --warm-brown: #695F42;
+  --text-body:  #1E1A14;
+  --text-muted: #6B6355;
+  --text-faint: #A09585;
+  --border:     rgba(19, 32, 48, 0.14);
+  --border-gold: rgba(199, 139, 79, 0.28);
+  --card-bg:    #FFFFFF;
+}
+
+body {
+  font-family: 'Libre Franklin', sans-serif;
+  background: var(--cream);
+  color: var(--text-body);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+.page-header {
+  background: var(--navy);
+  color: var(--cream);
+  text-align: center;
+  padding: 52px 24px 44px;
+}
+
+.header-rule {
+  width: 48px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto 28px;
+}
+
+.logo-wordmark {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 54px;
+  font-weight: 500;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.logo-tagline {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(244, 236, 228, 0.5);
+  margin-bottom: 28px;
+}
+
+.quarter-pill {
+  display: inline-block;
+  border: 0.5px solid rgba(199, 139, 79, 0.5);
+  color: var(--gold-light);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 5px 20px;
+  border-radius: 20px;
+}
+
+.red-rule { width: 100%; height: 3px; background: var(--red); }
+
+.form-container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 36px 24px 80px;
+}
+
+.notice {
+  background: var(--navy);
+  color: rgba(244, 236, 228, 0.8);
+  border-radius: 6px;
+  padding: 14px 20px;
+  font-size: 12px;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.notice strong { color: var(--gold-light); font-weight: 500; }
+
+.info-card {
+  background: var(--card-bg);
+  border: 0.5px solid var(--border);
+  border-top: 2.5px solid var(--navy);
+  border-radius: 6px;
+  padding: 28px;
+  margin-bottom: 32px;
+}
+
+.card-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.field-group { display: flex; flex-direction: column; gap: 5px; }
+
+label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+input[type="text"], input[type="email"] {
+  background: var(--off-white);
+  border: 0.5px solid var(--border);
+  border-radius: 4px;
+  padding: 9px 12px;
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-body);
+  outline: none;
+  transition: border-color 0.18s;
+}
+input[type="text"]:focus, input[type="email"]:focus {
+  border-color: var(--gold);
+  background: #FFF;
+}
+
+.dimension-block { margin-bottom: 32px; }
+
+.dim-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.dim-number {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 2px;
+}
+
+.dim-name {
+  font-family: 'EB Garamond', serif;
+  font-size: 22px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.dim-accent { flex: 1; height: 0.5px; background: var(--border-gold); }
+
+.dim-card {
+  background: var(--card-bg);
+  border: 0.5px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.dim-1 .dim-card { border-left: 3px solid var(--gold); }
+.dim-2 .dim-card { border-left: 3px solid var(--olive); }
+.dim-3 .dim-card { border-left: 3px solid var(--terra); }
+.dim-4 .dim-card { border-left: 3px solid var(--warm-brown); }
+
+.subdim {
+  padding: 20px 24px;
+  border-bottom: 0.5px solid var(--border);
+}
+.subdim:last-child { border-bottom: none; }
+
+.subdim-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.subdim-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-body);
+  letter-spacing: 0.02em;
+}
+
+.rating-val {
+  font-family: 'EB Garamond', serif;
+  font-size: 30px;
+  font-weight: 400;
+  min-width: 28px;
+  text-align: right;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.dim-1 .rating-val { color: var(--gold); }
+.dim-2 .rating-val { color: var(--olive); }
+.dim-3 .rating-val { color: var(--terra); }
+.dim-4 .rating-val { color: var(--warm-brown); }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  border-radius: 1px;
+  outline: none;
+  cursor: pointer;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.dim-1 input[type="range"] { background: linear-gradient(to right, #C78B4F 0%, #C78B4F var(--pct,44%), #E0D4C4 var(--pct,44%), #E0D4C4 100%); }
+.dim-2 input[type="range"] { background: linear-gradient(to right, #A2A45D 0%, #A2A45D var(--pct,44%), #E0D4C4 var(--pct,44%), #E0D4C4 100%); }
+.dim-3 input[type="range"] { background: linear-gradient(to right, #B3563A 0%, #B3563A var(--pct,44%), #E0D4C4 var(--pct,44%), #E0D4C4 100%); }
+.dim-4 input[type="range"] { background: linear-gradient(to right, #695F42 0%, #695F42 var(--pct,44%), #E0D4C4 var(--pct,44%), #E0D4C4 100%); }
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  background: #FFF;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.12s;
+}
+.dim-1 input[type="range"]::-webkit-slider-thumb { border: 1.5px solid #C78B4F; }
+.dim-2 input[type="range"]::-webkit-slider-thumb { border: 1.5px solid #A2A45D; }
+.dim-3 input[type="range"]::-webkit-slider-thumb { border: 1.5px solid #B3563A; }
+.dim-4 input[type="range"]::-webkit-slider-thumb { border: 1.5px solid #695F42; }
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.25); }
+input[type="range"]::-moz-range-thumb {
+  width: 16px; height: 16px; background: #FFF;
+  border: 1.5px solid #C78B4F; border-radius: 50%; cursor: pointer;
+}
+
+.scale-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+}
+
+textarea {
+  width: 100%;
+  background: var(--off-white);
+  border: 0.5px solid var(--border);
+  border-radius: 4px;
+  padding: 9px 12px;
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-body);
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  min-height: 60px;
+  margin-top: 14px;
+  transition: border-color 0.18s;
+}
+textarea:focus { border-color: var(--gold); background: #FFF; }
+textarea::placeholder { color: var(--text-faint); }
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 28px 0;
+}
+.section-divider::before, .section-divider::after {
+  content: '';
+  flex: 1;
+  height: 0.5px;
+  background: var(--border-gold);
+}
+.section-divider span { font-size: 11px; color: var(--gold); opacity: 0.55; }
+
+.overall-card {
+  background: var(--navy);
+  border-radius: 6px;
+  padding: 28px;
+  margin-bottom: 28px;
+}
+.overall-card .card-label { color: rgba(199,139,79,0.85); }
+.overall-card .prompt { font-size: 13px; color: rgba(244,236,228,0.65); margin-top: 6px; margin-bottom: 12px; }
+.overall-card textarea {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(199,139,79,0.22);
+  color: var(--cream);
+}
+.overall-card textarea:focus { border-color: var(--gold); background: rgba(255,255,255,0.1); }
+.overall-card textarea::placeholder { color: rgba(244,236,228,0.28); }
+
+.submit-card {
+  background: var(--card-bg);
+  border: 0.5px solid var(--border);
+  border-radius: 6px;
+  padding: 32px 28px;
+  text-align: center;
+}
+.submit-card p {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 24px;
+  max-width: 480px;
+  margin-left: auto; margin-right: auto;
+}
+
+.submit-btn {
+  display: inline-block;
+  background: var(--navy);
+  color: var(--gold-light);
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 24px;
+  padding: 13px 44px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.12s;
+}
+.submit-btn:hover { background: var(--navy-deep); transform: translateY(-1px); }
+.submit-btn:active { transform: translateY(0); }
+
+.success-message { display: none; text-align: center; padding: 60px 24px; }
+.success-message.shown { display: block; }
+.success-check {
+  width: 52px; height: 52px;
+  border: 1.5px solid var(--olive);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+}
+.success-message h3 {
+  font-family: 'EB Garamond', serif;
+  font-size: 28px; font-style: italic;
+  color: var(--navy); margin-bottom: 10px;
+}
+.success-message p { font-size: 13px; color: var(--text-muted); }
+
+.page-footer {
+  background: var(--navy);
+  text-align: center;
+  padding: 20px 24px;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(244,236,228,0.28);
+}
+
+@media (max-width: 600px) {
+  .field-row { grid-template-columns: 1fr; }
+  .logo-wordmark { font-size: 40px; }
+  .subdim { padding: 16px 18px; }
+  .info-card, .overall-card, .submit-card { padding: 20px 18px; }
+  .dim-name { font-size: 19px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-rule"></div>
+  <div class="logo-wordmark">Assembly</div>
+  <div class="logo-tagline">A Faith-Based Family Office Community</div>
+  <span class="quarter-pill" id="quarter-display">Q2 · 2026</span>
+</div>
+<div class="red-rule"></div>
+
+<div class="form-container">
+
+  <div class="notice">
+    <strong>For your group only.</strong> Your responses are compiled and shared with Assembly members in advance of your gathering. Be honest — this is a space for real reflection, not performance.
+  </div>
+
+  <form id="assembly-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+    <input type="hidden" name="_subject" value="Assembly Quarterly Check-In">
+    <input type="hidden" id="quarter-field" name="quarter" value="">
+
+    <div class="info-card">
+      <div class="card-label">Member Information</div>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="first-name">First Name</label>
+          <input type="text" id="first-name" name="first_name" required placeholder="Jonathan">
+        </div>
+        <div class="field-group">
+          <label for="last-name">Last Name</label>
+          <input type="text" id="last-name" name="last_name" required placeholder="Williams">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="jonathan@family.com">
+        </div>
+        <div class="field-group">
+          <label>Date Submitted</label>
+          <input type="text" id="date-submitted" name="date_submitted" readonly>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIMENSION 1 -->
+    <div class="dimension-block dim-1">
+      <div class="dim-header">
+        <div><div class="dim-number">Dimension One</div><div class="dim-name">Personal Growth</div></div>
+        <div class="dim-accent"></div>
+      </div>
+      <div class="dim-card">
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Personal Goals &amp; Progress</span><span class="rating-val" id="d-pg1">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="personal_goals_rating" id="r-pg1" oninput="upd(this,'d-pg1','dim-1')">
+          <div class="scale-labels"><span>1 — Struggling</span><span>10 — Thriving</span></div>
+          <textarea name="personal_goals_notes" placeholder="Where are you with your personal goals? Any wins, stalls, or pivots worth naming..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Spiritual Practices</span><span class="rating-val" id="d-pg2">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="spiritual_practices_rating" id="r-pg2" oninput="upd(this,'d-pg2','dim-1')">
+          <div class="scale-labels"><span>1 — Dormant</span><span>10 — Vibrant</span></div>
+          <textarea name="spiritual_practices_notes" placeholder="Prayer, Scripture, sabbath, solitude, community — what's alive and what's gone quiet..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Health &amp; Well-Being</span><span class="rating-val" id="d-pg3">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="health_wellbeing_rating" id="r-pg3" oninput="upd(this,'d-pg3','dim-1')">
+          <div class="scale-labels"><span>1 — Depleted</span><span>10 — Flourishing</span></div>
+          <textarea name="health_wellbeing_notes" placeholder="Physical, emotional, rhythmic — how is your body and energy holding up..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Learning &amp; Development</span><span class="rating-val" id="d-pg4">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="learning_development_rating" id="r-pg4" oninput="upd(this,'d-pg4','dim-1')">
+          <div class="scale-labels"><span>1 — Stagnant</span><span>10 — Growing</span></div>
+          <textarea name="learning_development_notes" placeholder="Books, mentors, courses, new skills — what have you been learning..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Self-Awareness &amp; Reflection</span><span class="rating-val" id="d-pg5">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="self_awareness_rating" id="r-pg5" oninput="upd(this,'d-pg5','dim-1')">
+          <div class="scale-labels"><span>1 — Unexamined</span><span>10 — Clear-eyed</span></div>
+          <textarea name="self_awareness_notes" placeholder="What are you learning about yourself? Any blind spots emerging..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Habits &amp; Consistency</span><span class="rating-val" id="d-pg6">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="habits_consistency_rating" id="r-pg6" oninput="upd(this,'d-pg6','dim-1')">
+          <div class="scale-labels"><span>1 — Scattered</span><span>10 — Grounded</span></div>
+          <textarea name="habits_consistency_notes" placeholder="Which habits are holding? Where are you struggling with follow-through..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"><span>✦</span></div>
+
+    <!-- DIMENSION 2 -->
+    <div class="dimension-block dim-2">
+      <div class="dim-header">
+        <div><div class="dim-number">Dimension Two</div><div class="dim-name">Family Formation</div></div>
+        <div class="dim-accent"></div>
+      </div>
+      <div class="dim-card">
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Family Meetings &amp; Conversations</span><span class="rating-val" id="d-ff1">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="family_meetings_rating" id="r-ff1" oninput="upd(this,'d-ff1','dim-2')">
+          <div class="scale-labels"><span>1 — Absent</span><span>10 — Intentional</span></div>
+          <textarea name="family_meetings_notes" placeholder="Are you gathering as a family? What conversations are happening — or not..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Communication Across Generations</span><span class="rating-val" id="d-ff2">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="generational_communication_rating" id="r-ff2" oninput="upd(this,'d-ff2','dim-2')">
+          <div class="scale-labels"><span>1 — Disconnected</span><span>10 — Bridged</span></div>
+          <textarea name="generational_communication_notes" placeholder="How well are you connecting across generations — children, parents, grandparents..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Family Values &amp; Culture</span><span class="rating-val" id="d-ff3">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="family_values_rating" id="r-ff3" oninput="upd(this,'d-ff3','dim-2')">
+          <div class="scale-labels"><span>1 — Undefined</span><span>10 — Embodied</span></div>
+          <textarea name="family_values_notes" placeholder="Are your family values visible in daily life? What stories or rituals are you living out..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Marriage &amp; Parent Partnership</span><span class="rating-val" id="d-ff4">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="marriage_partnership_rating" id="r-ff4" oninput="upd(this,'d-ff4','dim-2')">
+          <div class="scale-labels"><span>1 — Strained</span><span>10 — United</span></div>
+          <textarea name="marriage_partnership_notes" placeholder="How aligned are you and your spouse as partners — in marriage and in parenting..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Faith in the Home</span><span class="rating-val" id="d-ff5">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="faith_home_rating" id="r-ff5" oninput="upd(this,'d-ff5','dim-2')">
+          <div class="scale-labels"><span>1 — Peripheral</span><span>10 — Central</span></div>
+          <textarea name="faith_home_notes" placeholder="How present is faith in your household rhythms — in conversations, practices, posture..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Navigating Tension &amp; Conflict</span><span class="rating-val" id="d-ff6">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="conflict_navigation_rating" id="r-ff6" oninput="upd(this,'d-ff6','dim-2')">
+          <div class="scale-labels"><span>1 — Unresolved</span><span>10 — Handled well</span></div>
+          <textarea name="conflict_navigation_notes" placeholder="Any tensions present in your family right now — and how are you navigating them..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"><span>✦</span></div>
+
+    <!-- DIMENSION 3 -->
+    <div class="dimension-block dim-3">
+      <div class="dim-header">
+        <div><div class="dim-number">Dimension Three</div><div class="dim-name">Professional Impact</div></div>
+        <div class="dim-accent"></div>
+      </div>
+      <div class="dim-card">
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Professional Goals &amp; Priorities</span><span class="rating-val" id="d-pi1">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="professional_goals_rating" id="r-pi1" oninput="upd(this,'d-pi1','dim-3')">
+          <div class="scale-labels"><span>1 — Drifting</span><span>10 — Focused</span></div>
+          <textarea name="professional_goals_notes" placeholder="What are your top professional priorities this quarter? Where are you making progress..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Leadership Development</span><span class="rating-val" id="d-pi2">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="leadership_development_rating" id="r-pi2" oninput="upd(this,'d-pi2','dim-3')">
+          <div class="scale-labels"><span>1 — Plateaued</span><span>10 — Sharpening</span></div>
+          <textarea name="leadership_development_notes" placeholder="How are you growing as a leader — in your organization, your family, or your community..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Ongoing Learning</span><span class="rating-val" id="d-pi3">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="professional_learning_rating" id="r-pi3" oninput="upd(this,'d-pi3','dim-3')">
+          <div class="scale-labels"><span>1 — None</span><span>10 — Active</span></div>
+          <textarea name="professional_learning_notes" placeholder="What professional learning is happening — conferences, advisors, reading, networks..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Influence &amp; Contribution</span><span class="rating-val" id="d-pi4">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="influence_contribution_rating" id="r-pi4" oninput="upd(this,'d-pi4','dim-3')">
+          <div class="scale-labels"><span>1 — Withdrawn</span><span>10 — Impactful</span></div>
+          <textarea name="influence_contribution_notes" placeholder="Where are you having meaningful influence — in your industry, community, or relationships..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Values-Aligned Work</span><span class="rating-val" id="d-pi5">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="values_aligned_work_rating" id="r-pi5" oninput="upd(this,'d-pi5','dim-3')">
+          <div class="scale-labels"><span>1 — Misaligned</span><span>10 — Integrated</span></div>
+          <textarea name="values_aligned_work_notes" placeholder="How well does your work reflect your faith and values? Where is there tension or coherence..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Key Decisions &amp; Challenges</span><span class="rating-val" id="d-pi6">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="key_decisions_rating" id="r-pi6" oninput="upd(this,'d-pi6','dim-3')">
+          <div class="scale-labels"><span>1 — Overwhelmed</span><span>10 — Clear</span></div>
+          <textarea name="key_decisions_notes" placeholder="What major decisions or challenges are you navigating right now professionally..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"><span>✦</span></div>
+
+    <!-- DIMENSION 4 -->
+    <div class="dimension-block dim-4">
+      <div class="dim-header">
+        <div><div class="dim-number">Dimension Four</div><div class="dim-name">Generational Stewardship</div></div>
+        <div class="dim-accent"></div>
+      </div>
+      <div class="dim-card">
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Wealth Stewardship</span><span class="rating-val" id="d-gs1">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="wealth_stewardship_rating" id="r-gs1" oninput="upd(this,'d-gs1','dim-4')">
+          <div class="scale-labels"><span>1 — Reactive</span><span>10 — Intentional</span></div>
+          <textarea name="wealth_stewardship_notes" placeholder="How are you stewarding your wealth — with clarity, strategy, and kingdom perspective..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Estate &amp; Trust Planning</span><span class="rating-val" id="d-gs2">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="estate_planning_rating" id="r-gs2" oninput="upd(this,'d-gs2','dim-4')">
+          <div class="scale-labels"><span>1 — Neglected</span><span>10 — Current</span></div>
+          <textarea name="estate_planning_notes" placeholder="Where are your estate and trust plans today? Any updates needed or decisions pending..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Preparing the Next Generation</span><span class="rating-val" id="d-gs3">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="next_generation_prep_rating" id="r-gs3" oninput="upd(this,'d-gs3','dim-4')">
+          <div class="scale-labels"><span>1 — Unprepared</span><span>10 — Invested</span></div>
+          <textarea name="next_generation_prep_notes" placeholder="How are you actively preparing your children or heirs — financially, spiritually, practically..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Family Governance</span><span class="rating-val" id="d-gs4">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="family_governance_rating" id="r-gs4" oninput="upd(this,'d-gs4','dim-4')">
+          <div class="scale-labels"><span>1 — Informal</span><span>10 — Structured</span></div>
+          <textarea name="family_governance_notes" placeholder="What structures or processes does your family have for decisions, communication, and shared resources..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Philanthropy &amp; Giving</span><span class="rating-val" id="d-gs5">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="philanthropy_giving_rating" id="r-gs5" oninput="upd(this,'d-gs5','dim-4')">
+          <div class="scale-labels"><span>1 — Passive</span><span>10 — Strategic</span></div>
+          <textarea name="philanthropy_giving_notes" placeholder="How is your giving aligned with your values — in strategy, execution, and family engagement..."></textarea>
+        </div>
+        <div class="subdim">
+          <div class="subdim-top"><span class="subdim-title">Balancing Inheritance &amp; Responsibility</span><span class="rating-val" id="d-gs6">5</span></div>
+          <input type="range" min="1" max="10" value="5" step="1" name="inheritance_balance_rating" id="r-gs6" oninput="upd(this,'d-gs6','dim-4')">
+          <div class="scale-labels"><span>1 — Unresolved</span><span>10 — Thoughtful</span></div>
+          <textarea name="inheritance_balance_notes" placeholder="How are you thinking about what to give, when, and how much — and the responsibility that comes with wealth..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"><span>✦</span></div>
+
+    <div class="overall-card">
+      <div class="card-label">Overall Reflection</div>
+      <p class="prompt">Before you submit — is there anything else on your heart going into this gathering? A prayer request, a tension, or a question you want to bring to the group?</p>
+      <textarea name="overall_reflection" style="min-height: 90px;" placeholder="Anything on your heart as you head into this gathering..."></textarea>
+    </div>
+
+    <div class="submit-card">
+      <p>Your responses will be compiled and shared with Assembly members before your next gathering. Thank you for your honesty and vulnerability in this process.</p>
+      <button type="submit" class="submit-btn">Submit Reflection</button>
+    </div>
+  </form>
+
+  <div class="success-message" id="success-msg">
+    <div class="success-check">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M4 10l4 4 8-8" stroke="#A2A45D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h3>Reflection submitted.</h3>
+    <p>Thank you. Your responses have been received and will be shared with your Assembly group before you gather.</p>
+  </div>
+</div>
+
+<div class="page-footer">Assembly · A Faith-Based Family Office Community · Supported by Bench Consulting</div>
+
+<script>
+  const now = new Date();
+  const q = Math.ceil((now.getMonth() + 1) / 3);
+  const yr = now.getFullYear();
+  document.getElementById('quarter-display').textContent = 'Q' + q + ' \u00B7 ' + yr;
+  document.getElementById('quarter-field').value = 'Q' + q + ' ' + yr;
+  document.getElementById('date-submitted').value = now.toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'});
+
+  const colors = { 'dim-1': '#C78B4F', 'dim-2': '#A2A45D', 'dim-3': '#B3563A', 'dim-4': '#695F42' };
+
+  function upd(el, displayId, dimClass) {
+    const val = parseInt(el.value);
+    document.getElementById(displayId).textContent = val;
+    const pct = ((val - 1) / 9 * 100).toFixed(1) + '%';
+    const c = colors[dimClass] || '#C78B4F';
+    el.style.background = 'linear-gradient(to right, ' + c + ' 0%, ' + c + ' ' + pct + ', #E0D4C4 ' + pct + ', #E0D4C4 100%)';
+  }
+
+  document.querySelectorAll('input[type="range"]').forEach(function(el) {
+    const dimBlock = el.closest('.dimension-block');
+    const dimClass = dimBlock ? Array.from(dimBlock.classList).find(c => c.startsWith('dim-')) : 'dim-1';
+    const displayId = el.id.replace('r-', 'd-');
+    if (document.getElementById(displayId)) upd(el, displayId, dimClass);
+  });
+
+  const form = document.getElementById('assembly-form');
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = form.querySelector('.submit-btn');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    try {
+      const resp = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (resp.ok) {
+        form.style.display = 'none';
+        document.getElementById('success-msg').classList.add('shown');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        btn.textContent = 'Submit Reflection';
+        btn.disabled = false;
+        alert('There was a problem submitting. Please try again.');
+      }
+    } catch(err) {
+      btn.textContent = 'Submit Reflection';
+      btn.disabled = false;
+      alert('Network error. Please try again.');
+    }
+  });
+</script>
+</body>
+</html>
